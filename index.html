@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<!--
+  ════════════════════════════════════════════════════════
+  index.html — Yebum Portfolio
+  파일 구성:
+    index.html  → 페이지 구조 (이 파일)
+    style.css   → 모든 스타일 (색상, 폰트, 레이아웃)
+    main.js     → 인터랙션, 애니메이션, 프로젝트 데이터
+  자주 하는 수정:
+    이름/직함    → #hero 섹션
+    작업물 추가  → #work-wrap 섹션 + main.js PROJECTS
+    색상 변경    → style.css :root 변수
+    연락처 수정  → #contact 섹션
+  ════════════════════════════════════════════════════════
+-->
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yebum — Portfolio2026 · Jeju</title>
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     🔧 사이트 제목 → &lt;title&gt; 태그 수정
+     🔧 폰트 변경   → 아래 Google Fonts URL 수정
+     🔧 파비콘 추가 → &lt;link rel="icon" href="favicon.ico"&gt; 삽입
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div id="grain"></div>
+  <div id="cur"></div>
+  <div id="cur-ring"></div>
+  <div id="cur-lbl">VIEW</div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [NAVIGATION] 상단 네비게이션 바
+     🔧 로고 텍스트 변경  → .n-logo 안의 "Yebum" 수정
+     🔧 메뉴 항목 추가   → &lt;li&gt;&lt;a href="#섹션id"&gt;이름&lt;/a&gt;&lt;/li&gt; 복사
+     🔧 메뉴 항목 삭제   → &lt;li&gt;...&lt;/li&gt; 블록 삭제
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <nav id="nav">
+    <a href="#" class="n-logo">Yebum</a>
+    <ul class="n-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#work-wrap">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Career</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <!-- Dark / Light Toggle -->
+    <button id="theme-toggle" aria-label="Toggle dark/light mode">
+      <div class="tt-track">
+        <div class="tt-thumb">
+          <!-- sun icon -->
+          <svg class="tt-icon tt-sun" viewBox="0 0 9 9" fill="none" stroke="white" stroke-width="1.2">
+            <circle cx="4.5" cy="4.5" r="2" />
+            <line x1="4.5" y1="0.5" x2="4.5" y2="1.5" />
+            <line x1="4.5" y1="7.5" x2="4.5" y2="8.5" />
+            <line x1="0.5" y1="4.5" x2="1.5" y2="4.5" />
+            <line x1="7.5" y1="4.5" x2="8.5" y2="4.5" />
+          </svg>
+          <!-- moon icon -->
+          <svg class="tt-icon tt-moon" viewBox="0 0 9 9" fill="none" stroke="white" stroke-width="1.2">
+            <path d="M7 4.8A3 3 0 014.2 2a3 3 0 000 5.5A3 3 0 007 4.8z" />
+          </svg>
+        </div>
+      </div>
+      <span class="tt-label" id="tt-label">Light</span>
+    </button>
+  </nav>
+
+  <!-- §01 HERO -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [HERO SECTION] 메인 첫 화면
+     🔧 이름 변경      → .hero-name 안 &lt;span class="hl"&gt; 텍스트
+     🔧 직함 변경      → .hero-sub 텍스트
+     🔧 상단 태그 변경 → .hero-tag 텍스트
+     🔧 코너 텍스트    → .h-corner 안의 p 태그
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="hero">
+    <canvas id="grid-canvas"></canvas>
+    <div id="scanline"></div>
+    <div class="bracket bracket-tl"></div>
+    <div class="bracket bracket-tr"></div>
+    <div class="bracket bracket-bl"></div>
+    <div class="bracket bracket-br"></div>
+
+    <div class="hero-center">
+      <p class="hero-tag">Designer · Jeju · 2026</p>
+      <h1 class="hero-name">
+        <span class="hl">Y</span><span class="hl">e</span><span class="hl">b</span><span class="hl">u</span><span
+          class="hl">m</span>
+      </h1>
+      <span class="hero-line"></span>
+      <p class="hero-sub">Art x Technology · UX / UI · Interactive</p>
+    </div>
+
+    <div class="h-corner h-tl">
+      <p>Portfolio</p>
+      <p>2026
+      </p>
+    </div>
+    <div class="h-corner h-tr">
+      <p>Jeju, KR</p>
+      <p>Available</p>
+    </div>
+    <div class="h-corner h-br">
+      <span>Scroll</span>
+      <div class="scr-line"></div>
+    </div>
+  </section>
+
+  <!-- §02 ABOUT -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [ABOUT SECTION] 자기소개
+     🔧 소개 문단   → .a-p 태그 텍스트 수정
+     🔧 팩트 항목   → .a-row 안의 .a-k / .a-v 수정
+         (Location / Available / Experience / Focus)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="about">
+    <div class="about-grid">
+      <div>
+        <p class="a-tag fu">About</p>
+        <h2 class="a-hl">
+          <span class="sl"><span class="si">Crafting the</span></span>
+          <span class="sl"><span class="si">space between</span></span>
+          <span class="sl"><span class="si">art &amp; technology.</span></span>
+        </h2>
+      </div>
+      <div class="a-right">
+        <p class="a-p">저는 기술과 예술이 만나는 지점을 디자인하는 <strong>고예범</strong>입니다.
+          시각 언어와 인터랙션을 통해 새로운 경험을 만들고, 아이디어가 실제로 작동하는 방식을 탐구합니다.
+
+        </p>
+        <p class="a-p" style="transition-delay:.1s">세밀한 디테일과 대담한 개념적 방향 사이의 균형을 중요하게 생각합니다.
+          모든 프로젝트는 하나의 고유한 언어를 가진다고 믿습니다.</p>
+        <div class="a-facts">
+          <div class="a-row"><span class="a-k">Location</span><span class="a-v">Jeju, Korea</span></div>
+          <div class="a-row" style="transition-delay:.07s"><span class="a-k">Available</span><span class="a-v">Freelance
+              · Student</span></div>
+          <div class="a-row" style="transition-delay:.14s"><span class="a-k">Experience</span><span class="a-v">2+
+              Years</span></div>
+          <div class="a-row" style="transition-delay:.21s"><span class="a-k">Focus</span><span class="a-v">VR/AR · UX /
+              UI
+              ·
+              Media Art</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §03 WORK -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [WORK SECTION] 포트폴리오 작업물 슬라이더
+     카드 추가 방법:
+       1. 아래 &lt;article class="wcard"&gt; 블록 복사 후 붙여넣기
+       2. data-project="키이름" → main.js PROJECTS 키와 일치
+       3. .wcard-fill 배경색 또는 이미지 수정
+       4. .wcard-title / .wcard-meta 텍스트 수정
+     카드 썸네일 이미지:
+       wcard-img style 속성에 background-image:url("사진.jpg") 추가
+     카운터 업데이트:
+       .w-cnt 안의 "/ 05" → 카드 총 개수로 변경
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="work-wrap">
+    <div id="work-sticky">
+      <div class="w-hdr">
+        <p class="w-lbl">Selected Work</p>
+        <p class="w-cnt"><span id="wn">01</span><span style="color:var(--l)"> / 11</span></p>
+      </div>
+      <div id="w-track">
+        <!-- 💡 [썸네일 이미지 가이드]
+             작업물 썸네일 이미지를 넣으려면 배경색 클래스(wc1 등) 대신 
+             아래처럼 wcard-img 태그에 style="background-image:url('이미지주소');" 를 추가해주시면 됩니다!
+             (원하는 폴더에 이미지를 넣고 주소를 연결하세요) 
+        <article class="wcard" data-project="new_project">
+          <div class="wcard-img"
+            style="background-image:url('img/your-thumbnail.jpg'); background-size: cover; background-position: center;">
+            <div class="wcard-fill" style="background: transparent;">
+           이미지가 없을 때 임시로 표시되는 글씨를 원치 않으시면 아래 span을 지워도 됩니다
+              <span class="wcard-ghost" style="color:rgba(255,255,255,0.7); text-shadow: 0 0 10px rgba(0,0,0,0.5);">NEW
+                ITEM</span>
+            </div>
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">새로운 프로젝트 이름</h3>
+            <div class="wcard-meta"><span>프로젝트 카테고리</span><span>2026</span></div>
+          </div>
+        </article> -->
+        <article class="wcard" data-project="dndn">
+          <div class="wcard-img"
+            style="background-image:url('img/dndn.png'); background-size: cover; background-position: center;">
+            <div class="wcard-fill" style="background: transparent;">
+              <!-- <span class="wcard-ghost" style="color:rgba(255,255,255,0.7); text-shadow: 0 0 10px rgba(0,0,0,0.5);">NEW
+                ITEM</span> 덮히는 제목-->
+            </div>
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">든든AI <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                title="Award Winner"
+                style="width:15px; height:15px; margin-left:6px; color:var(--ac); vertical-align:-2px;">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+              </svg></h3>
+            <div class="wcard-meta"><span>Y-Startup</span><span>2026</span></div>
+          </div>
+        </article>
+        <article class="wcard" data-project="CITY">
+          <div class="wcard-img"
+            style="background-image:url('img/CITY01.png'); background-size: cover; background-position: center;">
+            <!-- <div class="wcard-fill wc1"><span class="wcard-ghost">CITY</span></div> -->
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">CITY : Civic Innovation Through You<svg viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" title="Award Winner"
+                style="width:15px; height:15px; margin-left:6px; color:var(--ac); vertical-align:-2px;">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+              </svg></h3>
+            <div class="wcard-meta"><span>NextGen Startup Challenge</span><span>2026</span></div>
+          </div>
+        </article>
+        <article class="wcard" data-project="Jeonger">
+          <div class="wcard-img"
+            style="background-image:url('img/Jeonger.png'); background-size: cover; background-position: center;">
+            <!-- <div class="wcard-fill wc2"><span class="wcard-ghost">Jeonger</span></div> -->
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">Jeonger<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                title="Award Winner"
+                style="width:15px; height:15px; margin-left:6px; color:var(--ac); vertical-align:-2px;">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+              </svg></h3>
+            <div class="wcard-meta"><span>Think City 2026 Hackathon</span><span>2026</span></div>
+          </div>
+        </article>
+        <article class="wcard" data-project="toss">
+          <div class="wcard-img"
+            style="background-image:url('img/toss.png'); background-size: cover; background-position: center;">
+            <!-- <div class="wcard-fill wc3"><span class="wcard-ghost">토스증권 광고</span></div> -->
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">토스증권 광고<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                title="Award Winner"
+                style="width:15px; height:15px; margin-left:6px; color:var(--ac); vertical-align:-2px;">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+              </svg></h3>
+            <div class="wcard-meta"><span>3D모션그래픽스</span><span>2025</span></div>
+          </div>
+        </article>
+        <article class="wcard" data-project="sds">
+          <div class="wcard-img"
+            style="background-image:url('img/sds.png'); background-size: cover; background-position: center;">
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">스대살 : 스위스에서 대학생으로 살아남기</h3>
+            <div class="wcard-meta"><span>UX/UI</span><span>2025</span></div>
+          </div>
+        </article>
+        <article class="wcard" data-project="supporters">
+          <div class="wcard-img"
+            style="background-image:url('img/supporters.png'); background-size: cover; background-position: center;">
+            <!-- <div class="wcard-fill wc5"><span class="wcard-ghost">슈퍼플레이 서포터즈</span></div> -->
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">슈퍼플레이 서포터즈 2기</h3>
+            <div class="wcard-meta"><span>SUPERPLAY</span><span>2025</span></div>
+          </div>
+        </article>
+        <article class="wcard" data-project="learncation">
+          <div class="wcard-img"
+            style="background-image:url('img/learncation.png'); background-size: cover; background-position: center;">
+            <!-- <div class="wcard-fill wc4"><span class="wcard-ghost">가치 제주, 고치 제주</span></div> -->
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">가치 제주, 고치 제주<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.8" title="Award Winner"
+                style="width:15px; height:15px; margin-left:6px; color:var(--ac); vertical-align:-2px;">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+              </svg></h3>
+            <div class="wcard-meta"><span>제주가치 공감, 런케이션 해커톤</span><span>2025</span></div>
+          </div>
+        </article>
+        <article class="wcard" data-project="hana">
+          <div class="wcard-img"
+            style="background-image:url('img/hana.png'); background-size: cover; background-position: center;">
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">Fill The [ ], Feel My [ ]</h3>
+            <div class="wcard-meta"><span>제3회 하나카드 plate 디자인 공모전</span><span>2025</span></div>
+          </div>
+        </article>
+        <article class="wcard" data-project="climate">
+          <div class="wcard-img"
+            style="background-image:url('img/climate.png'); background-size: cover; background-position: center;">
+            <!-- <div class="wcard-fill wc5"><span class="wcard-ghost">기후동행카드 광고</span></div> -->
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">기후동행카드 광고</h3>
+            <div class="wcard-meta"><span>3D모션그래픽스</span><span>2025</span></div>
+          </div>
+        </article>
+        <article class="wcard" data-project="naver">
+          <div class="wcard-img"
+            style="background-image:url('img/naver.png'); background-size: cover; background-position: center;">
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">네이버지도 광고<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.8" title="Award Winner"
+                style="width:15px; height:15px; margin-left:6px; color:var(--ac); vertical-align:-2px;">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+              </svg></h3>
+            <div class="wcard-meta"><span>영상기초</span><span>2025</span></div>
+          </div>
+        </article>
+        <article class="wcard" data-project="dmd">
+          <div class="wcard-img"
+            style="background-image:url('img/dmd.png'); background-size: cover; background-position: center;">
+            <!-- <div class="wcard-fill wc5"><span class="wcard-ghost">디미디, 우주를 닮다</span></div> -->
+          </div>
+          <div class="wcard-info">
+            <h3 class="wcard-title">디미디, 우주를 닮다</h3>
+            <div class="wcard-meta"><span>기획기초</span><span>2025</span></div>
+          </div>
+        </article>
+      </div>
+      <div id="w-prog"></div>
+    </div>
+  </section>
+
+  <!-- §04 SKILLS -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [SKILLS SECTION] 스킬/툴 섹션
+     🔧 스킬 항목 추가  → .sk-col 안에 &lt;li&gt; 추가
+     🔧 카테고리 추가   → .sk-col 블록 전체 복사
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="skills">
+    <p class="sk-wm">Craft</p>
+    <div class="sk-top fu">
+      <h2 class="sk-h">Skills &amp;<br><em>Expertise</em></h2>
+      <span class="sk-tag">Disciplines</span>
+    </div>
+    <div class="sk-grid">
+      <div class="sk-col">
+        <p class="sk-ct">Design</p>
+        <ul>
+          <li>UX / UI Design</li>
+          <li>Interaction Design</li>
+          <li>Web Design</li>
+          <li>Illustration</li>
+        </ul>
+      </div>
+      <div class="sk-col">
+        <p class="sk-ct">Motion &amp; Media</p>
+        <ul>
+          <li>Motion Graphics</li>
+          <li>Motion Design</li>
+          <li>Video Editing</li>
+          <li>Media Art</li>
+        </ul>
+      </div>
+      <div class="sk-col">
+        <p class="sk-ct">Creative Technology</p>
+        <ul>
+          <li>HTML · CSS · JavaScript</li>
+          <li>C</li>
+          <li>C#</li>
+          <li>3D Modeling</li>
+          <li>VR Content</li>
+          <li>Interactive Experience</li>
+        </ul>
+      </div>
+      <div class="sk-col">
+        <p class="sk-ct">Tools</p>
+        <ul>
+          <li>Figma</li>
+          <li>Adobe CC</li>
+          <li>Blender</li>
+          <li>Unity</li>
+          <li>TouchDesigner</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- §06 EXPERIENCE · AWARDS · EDUCATION -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [CAREER & AWARDS & EDUCATION]
+     🔧 경력 항목 수정 → Career 열의 .exp-item 수정
+           형식: 연도범위 / 회사명 / 직책
+     🔧 수상 항목 수정 → Awards 열의 .exp-item 수정
+     🔧 학력 항목 수정 → Education 열의 .exp-item 수정
+     🔧 항목 추가      → 해당 .exp-item 블록 복사 후 붙여넣기
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="experience">
+    <p class="exp-wm">Archive</p>
+    <div class="exp-top fu">
+      <h2 class="exp-h">Career &amp;<br><em>Awards · Education</em></h2>
+      <span class="exp-tag">Background</span>
+    </div>
+    <div class="exp-cols">
+
+      <!-- Career -->
+      <div class="exp-col">
+        <p class="exp-col-title">Experience</p>
+        <div class="exp-item">
+          <p class="exp-year">2025</p>
+          <p class="exp-name">GTQ 포토샵, 일러스트 1급</p>
+          <p class="exp-sub">한국생산성본부</p>
+        </div>
+        <div class="exp-item" style="transition-delay:.08s">
+          <p class="exp-year">2025</p>
+          <p class="exp-name">슈퍼플레이 서포터즈 2기</p>
+          <p class="exp-sub">슈퍼플레이</p>
+        </div>
+        <div class="exp-item" style="transition-delay:.16s">
+          <p class="exp-year">2025</p>
+          <p class="exp-name">학과 우수작 연합PT</p>
+          <p class="exp-sub">실감미디어기초, 영상기초, 3D모션그래픽스</p>
+        </div>
+        <div class="exp-item" style="transition-delay:.24s">
+          <p class="exp-year">2025</p>
+          <p class="exp-name">경희대 유니티, 블렌더 비교과 프로그램 수료</p>
+          <p class="exp-sub">실감미디어 혁신융합대학사업단</p>
+        </div>
+
+      </div>
+
+      <!-- Awards -->
+      <div class="exp-col">
+        <p class="exp-col-title">Awards &amp; Recognition</p>
+        <div class="exp-item">
+          <p class="exp-year">2025</p>
+          <p class="exp-name">제주가치 공감 런케이션 해커톤</p>
+          <p class="exp-sub">기업과 함께하는 가치 제주, 고치 제주</p>
+          <span class="exp-badge">장려상</span>
+        </div>
+        <div class="exp-item" style="transition-delay:.08s">
+          <p class="exp-year">2026</p>
+          <p class="exp-name">Think City Hackathon 2026</p>
+          <p class="exp-sub">Jeonger</p>
+          <span class="exp-badge">Community Impact Award - 2nd Prize</span>
+        </div>
+        <div class="exp-item" style="transition-delay:.16s">
+          <p class="exp-year">2026</p>
+          <p class="exp-name">NextGen Startup Challenge</p>
+          <p class="exp-sub">CITY</p>
+          <span class="exp-badge">3rd Prize</span>
+        </div>
+        <!-- <div class="exp-item" style="transition-delay:.24s">
+          <p class="exp-year">Year</p>
+          <p class="exp-name">Challenge</p>
+          <p class="exp-sub">Project</p>
+          <span class="exp-badge">Award</span>
+        </div> -->
+      </div>
+
+      <!-- Education -->
+      <div class="exp-col">
+        <p class="exp-col-title">Education</p>
+        <div class="exp-item">
+          <p class="exp-year">2019 — 2021</p>
+          <p class="exp-name">대기고등학교</p>
+        </div>
+        <div class="exp-item" style="transition-delay:.08s">
+          <p class="exp-year">2022</p>
+          <p class="exp-name">제주대학교</p>
+          <p class="exp-sub">통신공학과</p>
+        </div>
+        <div class="exp-item" style="transition-delay:.16s">
+          <p class="exp-year">2023 — Present</p>
+          <p class="exp-name">계원예술대학교</p>
+          <p class="exp-sub">디지털미디어디자인과</p>
+        </div>
+        <!-- <div class="exp-item" style="transition-delay:.16s">
+          <p class="exp-year">Year</p>
+          <p class="exp-name">School</p>
+          <p class="exp-sub">Major</p>
+        </div>
+        <div class="exp-item" style="transition-delay:.24s">
+          <p class="exp-year">Year</p>
+          <p class="exp-name">School</p>
+          <p class="exp-sub">Major</p>
+        </div> -->
+      </div>
+    </div>
+  </section>
+
+  <!-- §05 CONTACT -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [CONTACT SECTION] 연락처
+     🔧 이메일 수정  → href="mailto:이메일주소" + 텍스트
+     🔧 SNS 링크 추가 → .ct-soc 안에 &lt;li&gt;&lt;a href="링크"&gt;이름&lt;/a&gt;&lt;/li&gt;
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="contact">
+    <p class="ct-wm" id="ct-wm">Hello</p>
+    <p class="ct-tag">Get in touch</p>
+    <h2 class="ct-h" id="ct-h">
+      <span class="sl"><span class="si">Let's make</span></span>
+      <span class="sl"><span class="si">something</span></span>
+      <span class="sl"><span class="si"><em>beautiful.</em></span></span>
+    </h2>
+    <a href="/cdn-cgi/l/email-protection#b4dfdbcdd1d6c1d985f4dad5c2d1c69ad7dbd9" class="ct-em" id="ct-em"><span
+        class="__cf_email__" data-cfemail="bad1d5c3dfd8cfd78bfad4dbccdfc894d9d5d7">[koyebum1@naver.com]</span></a>
+    <ul class="ct-soc" id="ct-soc">
+      <li><a href="#">준비중</a></li>
+      <li><a href="#">준비중</a></li>
+      <li><a href="#">준비중</a></li>
+      <li><a href="#">준비중</a></li>
+    </ul>
+  </section>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [FOOTER] 하단 정보
+     🔧 연도/이름/위치 → span 텍스트 수정
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <footer>
+    <span>© 2026 Yebum</span>
+    <span>Jeju, Korea</span>
+    <span>Designed &amp; built by Yebum</span>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
