@@ -465,7 +465,7 @@
         // 위에서 작성한 sections 배열 요소 순서에 맞게 하나씩 1:1로 옆자리에 배치됩니다.
         { type: 'img', src: 'img/dndn.png', label: 'img' },
         { type: 'pdf', src: 'https://drive.google.com/file/d/1GTKoLy_zkEXd9j9vvgvryR2NIW2moGaF/view?usp=sharing', label: 'pdf' },
-        { type: 'video', src: 'https://drive.google.com/file/d/1h_hmWHNEGFVQSHczw9Wt-ltj0MMxhrKq/view?usp=sharing', label: 'video' },
+        { type: 'video', src: 'https://drive.google.com/file/d/1wLRtBVc6J5XIy4k1-HjJAQ0x_9YOO8zy/view?usp=sharing', label: 'video' },
         // { type: 'video', src: 'video/sample.mp4', label: '비디오 캡션' } // 영상을 넣고 싶으시면 이렇게 하세요!
       ]
     },
