@@ -1325,6 +1325,11 @@ footer span:first-child {
   #w-track {
     padding: 0 5vw;
     gap: 5vw;
+    touch-action: pan-y;
+  }
+
+  #work-sticky {
+    height: 100svh;
   }
 
   footer {

@@ -248,6 +248,7 @@
      이 값은 레이아웃이 변하지 않는 한 고정.
   ══════════════════════════════════ */
   const workWrap = $('#work-wrap');
+  const workSticky = $('#work-sticky');
   const workTrack = $('#w-track');
   const wProg = $('#w-prog');
   const wNumEl = $('#wn');
@@ -283,7 +284,9 @@
         if (slideWidth < 1) slideWidth = 1;
 
         // 4. wrap 높이 설정
-        workWrap.style.height = (window.innerHeight + slideWidth) + 'px';
+        // 모바일에서는 CSS의 100svh 실측값을 사용해 주소창 변화에도 높이를 고정한다.
+        const workViewportHeight = workSticky.offsetHeight || window.innerHeight;
+        workWrap.style.height = (workViewportHeight + slideWidth) + 'px';
 
         // 5. wrapTop: getBoundingClientRect + scrollY 방식 (offsetParent 체인보다 안정적)
         //    height 변경 후 offsetHeight로 강제 reflow 후 측정
@@ -356,27 +359,20 @@
     }
   }, { capture: true });
 
-  // 터치 스와이프 지원
-  workTrack.addEventListener('touchstart', (e) => {
-    isDraggingTrack = true;
-    hasDragged = false;
-    startX = e.touches[0].pageX;
-    startScrollY = window.scrollY;
-  }, { passive: true });
-
-  window.addEventListener('touchend', () => { isDraggingTrack = false; });
-  window.addEventListener('touchmove', (e) => {
-    if (!isDraggingTrack) return;
-    const deltaX = e.touches[0].pageX - startX;
-    if (Math.abs(deltaX) > 5) hasDragged = true;
-    const targetScroll = startScrollY - (deltaX * 1.5);
-    window.scrollTo({ top: targetScroll, behavior: 'auto' });
-  }, { passive: true });
+  // 모바일은 브라우저의 기본 세로 스크롤을 그대로 사용한다.
+  // scroll 이벤트의 applyWork가 기존처럼 카드의 가로 이동을 담당한다.
 
   // 초기화 — load 이후 한 번만 실행되도록 debounce로 묶임
   window.addEventListener('load', initWork);
   document.fonts.ready.then(initWork);
-  window.addEventListener('resize', initWork);
+  let lastWorkViewportWidth = window.innerWidth;
+  window.addEventListener('resize', () => {
+    const nextWidth = window.innerWidth;
+    // 모바일 주소창 표시/숨김은 높이만 바뀌므로 작업물 레이아웃을 재설정하지 않는다.
+    if (Math.abs(nextWidth - lastWorkViewportWidth) < 2) return;
+    lastWorkViewportWidth = nextWidth;
+    initWork();
+  });
 
   /* ══════════════════════════════════
      CONTACT PARALLAX
