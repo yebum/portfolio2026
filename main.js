@@ -260,23 +260,22 @@
 
   /* 요소의 문서 내 절대 top 위치 계산 */
   let _initWorkTimer = null;
+  let workInitialized = false;
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      [WORK SECTION] 작업물 가로 스크롤 초기화
      🔧 스크롤 속도 → multiplier 값 수정
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  function initWork() {
+  function initWork(force = false) {
+    if ((workInitialized || _initWorkTimer) && !force) return;
+
     // 중복 호출 방지 — 이전 예약된 initWork가 있으면 취소
     if (_initWorkTimer) clearTimeout(_initWorkTimer);
 
     _initWorkTimer = setTimeout(() => {
       _initWorkTimer = null;
 
-      // 1. 트랙 리셋 + wrap 높이 초기화
-      workTrack.style.transform = 'translateX(0)';
-      workWrap.style.height = '';
-
-      // 2. 3번의 rAF으로 레이아웃 완전히 settle 후 측정
+      // 기존 위치를 유지한 채 레이아웃을 측정한다.
       requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(() => {
 
         // 3. 슬라이드 폭 측정
@@ -295,6 +294,7 @@
 
         // 6. 즉시 반영
         applyWork();
+        workInitialized = true;
       })));
     }, 30);
   }
@@ -362,16 +362,17 @@
   // 모바일은 브라우저의 기본 세로 스크롤을 그대로 사용한다.
   // scroll 이벤트의 applyWork가 기존처럼 카드의 가로 이동을 담당한다.
 
-  // 초기화 — load 이후 한 번만 실행되도록 debounce로 묶임
-  window.addEventListener('load', initWork);
-  document.fonts.ready.then(initWork);
+  // DOM 하단에서 즉시 초기화하고, 늦은 load/font 이벤트의 중복 초기화는 무시한다.
+  initWork();
+  window.addEventListener('load', () => initWork());
+  document.fonts.ready.then(() => initWork());
   let lastWorkViewportWidth = window.innerWidth;
   window.addEventListener('resize', () => {
     const nextWidth = window.innerWidth;
     // 모바일 주소창 표시/숨김은 높이만 바뀌므로 작업물 레이아웃을 재설정하지 않는다.
     if (Math.abs(nextWidth - lastWorkViewportWidth) < 2) return;
     lastWorkViewportWidth = nextWidth;
-    initWork();
+    initWork(true);
   });
 
   /* ══════════════════════════════════
@@ -412,9 +413,32 @@
      NAV
   ══════════════════════════════════ */
   const nav = $('#nav');
+  const navToggle = $('#nav-toggle');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('solid', window.scrollY > window.innerHeight * .5);
   }, { passive: true });
+
+  if (navToggle) {
+    const closeMobileNav = () => {
+      nav.classList.remove('menu-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', '메뉴 열기');
+    };
+
+    navToggle.addEventListener('click', () => {
+      const willOpen = !nav.classList.contains('menu-open');
+      nav.classList.toggle('menu-open', willOpen);
+      navToggle.setAttribute('aria-expanded', String(willOpen));
+      navToggle.setAttribute('aria-label', willOpen ? '메뉴 닫기' : '메뉴 열기');
+    });
+    $$('.n-links a').forEach(link => link.addEventListener('click', closeMobileNav));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeMobileNav();
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 700) closeMobileNav();
+    });
+  }
 
 
   /* ══════════════════════════════════
@@ -1420,7 +1444,15 @@ figcaption {
   .proj-hero { padding:110px 5vw 60px; }
 }
 @media(max-width:600px) {
-  .topbar { padding:16px 20px; }
+  .topbar {
+    padding:16px 20px;
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+    gap:12px;
+  }
+  .topbar > div { min-width:0; }
+  .tb-title { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .tb-cat { display:none; }
   .emg-inner { grid-template-columns:1fr; }
   .details { grid-template-columns:1fr 1fr; }
 }

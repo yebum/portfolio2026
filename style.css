@@ -316,6 +316,35 @@ body.cv #cur-lbl {
   width: 100%;
 }
 
+.nav-toggle {
+  display: none;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: 1px solid var(--l);
+  background: var(--bg-page);
+  cursor: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav-toggle span {
+  width: 14px;
+  height: 1px;
+  background: var(--b);
+  transition: transform .25s;
+}
+
+#nav.menu-open .nav-toggle span:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+#nav.menu-open .nav-toggle span:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
 /* ══════════════════════════════════
    §01 HERO — Grid + Distortion
 ══════════════════════════════════ */
@@ -1562,6 +1591,79 @@ footer span:first-child {
 
   footer {
     padding: 22px 24px;
+  }
+}
+
+@media(max-width:700px) {
+  #nav {
+    padding: 18px 20px;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .n-logo {
+    margin-right: auto;
+  }
+
+  #theme-toggle {
+    margin-left: 0;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .n-links {
+    position: fixed;
+    top: 68px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 10px 16px;
+    border: 1px solid var(--l);
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity .22s, visibility .22s, transform .22s;
+  }
+
+  #nav.menu-open .n-links {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  .n-links a {
+    display: block;
+    padding: 13px 2px;
+    border-bottom: 1px solid var(--l);
+  }
+
+  .n-links li:last-child a {
+    border-bottom: 0;
+  }
+
+  #hero {
+    height: 100svh;
+  }
+
+  #contact {
+    min-height: 100svh;
+  }
+}
+
+@media(max-width:600px) {
+  .guestbook-list {
+    max-height: none;
+    overflow: visible;
+    overscroll-behavior: auto;
   }
 }
 
