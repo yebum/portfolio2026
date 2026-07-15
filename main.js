@@ -1624,6 +1624,8 @@ ${extraGridHTML}
   const emailTrigger = $('#ct-em');
   const emailChoice = $('#email-choice');
   const emailChoiceClose = emailChoice && $('.email-choice-close');
+  const emailCursorDot = emailChoice && $('.email-cursor-dot');
+  const emailCursorRing = emailChoice && $('.email-cursor-ring');
 
   if (emailTrigger && emailChoice) {
     emailTrigger.addEventListener('click', e => {
@@ -1636,6 +1638,18 @@ ${extraGridHTML}
       if (e.target === emailChoice) emailChoice.close();
     });
     emailChoice.addEventListener('cancel', () => emailChoice.close());
+
+    emailChoice.addEventListener('mousemove', e => {
+      emailCursorDot.style.left = e.clientX + 'px';
+      emailCursorDot.style.top = e.clientY + 'px';
+      emailCursorRing.style.left = e.clientX + 'px';
+      emailCursorRing.style.top = e.clientY + 'px';
+    });
+
+    emailChoice.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => emailChoice.classList.add('is-cursor-hover'));
+      el.addEventListener('mouseleave', () => emailChoice.classList.remove('is-cursor-hover'));
+    });
   }
 
 })();
