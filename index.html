@@ -682,14 +682,47 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <section id="contact">
     <p class="ct-wm" id="ct-wm">Hello</p>
-    <p class="ct-tag">Get in touch</p>
-    <h2 class="ct-h" id="ct-h">
-      <span class="sl"><span class="si">Let's make</span></span>
-      <span class="sl"><span class="si">something</span></span>
-      <span class="sl"><span class="si"><em>beautiful.</em></span></span>
-    </h2>
-    <a href="mailto:koyebum1@naver.com" class="ct-em" id="ct-em" aria-haspopup="dialog"
-      aria-controls="email-choice">[koyebum1@naver.com]</a>
+    <div class="contact-main">
+      <div class="contact-copy">
+        <p class="ct-tag">Get in touch</p>
+        <h2 class="ct-h" id="ct-h">
+          <span class="sl"><span class="si">Let's make</span></span>
+          <span class="sl"><span class="si">something</span></span>
+          <span class="sl"><span class="si"><em>beautiful.</em></span></span>
+        </h2>
+        <a href="mailto:koyebum1@naver.com" class="ct-em" id="ct-em" aria-haspopup="dialog"
+          aria-controls="email-choice">[koyebum1@naver.com]</a>
+      </div>
+
+      <aside class="guestbook" aria-labelledby="guestbook-title">
+        <div class="guestbook-head">
+          <div>
+            <p class="guestbook-tag">Guestbook</p>
+            <h3 id="guestbook-title">한마디 남겨주세요.</h3>
+          </div>
+          <span class="guestbook-live" title="Firebase 실시간 연결">Live</span>
+        </div>
+
+        <form class="guestbook-form" id="guestbook-form">
+          <label class="sr-only" for="guestbook-name">닉네임</label>
+          <input id="guestbook-name" name="nickname" type="text" maxlength="20" placeholder="닉네임" autocomplete="nickname"
+            required>
+          <label class="sr-only" for="guestbook-message">메시지</label>
+          <textarea id="guestbook-message" name="message" maxlength="200" rows="3" placeholder="포트폴리오에 대한 의견을 남겨주세요."
+            required></textarea>
+          <input class="guestbook-hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="guestbook-form-foot">
+            <span id="guestbook-count">0 / 200</span>
+            <button id="guestbook-submit" type="submit">Leave a message <span>↗</span></button>
+          </div>
+          <p class="guestbook-status" id="guestbook-status" role="status" aria-live="polite">Firebase 연결 중...</p>
+        </form>
+
+        <div class="guestbook-list" id="guestbook-list" aria-live="polite">
+          <p class="guestbook-empty">메시지를 불러오는 중입니다.</p>
+        </div>
+      </aside>
+    </div>
     <ul class="ct-soc" id="ct-soc">
       <li><a href="https://github.com/yebum" target="_blank" rel="noopener noreferrer">GitHub</a></li>
       <li><a href="#">준비중</a></li>
@@ -726,6 +759,7 @@
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script src="main.js"></script>
+  <script type="module" src="guestbook.js"></script>
 </body>
 
 </html>
