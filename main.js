@@ -488,7 +488,7 @@
           media: [
             // 🔧 설명 섹션 옆에 순서대로 화면을 채울 이미지나 영상 소스들입니다.
             // 위에서 작성한 sections 배열 요소 순서에 맞게 하나씩 1:1로 옆자리에 배치됩니다.
-            { type: 'img', src: 'img/Neuroscape.jpg', label: 'img' },
+            { type: 'img', src: 'img/Neuroscape.png', label: 'img' },
             { type: 'pdf', src: 'https://drive.google.com/file/d/1YaPNUDRKhECPX4rHZFUZlIYUDc0_HxSZ/view?usp=sharing', label: 'pdf' },
             { type: 'video', src: 'https://drive.google.com/file/d/10iDYKqnyNNyr8Pj9hRNzn7H0ivoslYeT/view?usp=sharing', label: 'video' },
             // { type: 'video', src: 'video/sample.mp4', label: '비디오 캡션' } // 영상을 넣고 싶으시면 이렇게 하세요!
@@ -516,7 +516,7 @@
           media: [
             // 🔧 설명 섹션 옆에 순서대로 화면을 채울 이미지나 영상 소스들입니다.
             // 위에서 작성한 sections 배열 요소 순서에 맞게 하나씩 1:1로 옆자리에 배치됩니다.
-            { type: 'img', src: 'img/BeyondTheCenter.jpg', label: 'img' },
+            { type: 'img', src: 'img/BeyondTheCenter.png', label: 'img' },
             { type: 'pdf', src: 'https://drive.google.com/file/d/1ZtWzIYop_iDBT4swG7t-dUua5PrFpo8G/view?usp=sharing', label: 'pdf' },
             { type: 'video', src: 'https://drive.google.com/file/d/1yHndB4FKu6hsApJGYCYPQrEgVt-p1Rh-/view?usp=sharing', label: 'video' },
             // { type: 'video', src: 'video/sample.mp4', label: '비디오 캡션' } // 영상을 넣고 싶으시면 이렇게 하세요!
