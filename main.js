@@ -1620,6 +1620,22 @@ ${extraGridHTML}
     });
   })();
 
+  /* EMAIL SERVICE CHOICE */
+  const emailTrigger = $('#ct-em');
+  const emailChoice = $('#email-choice');
+  const emailChoiceClose = emailChoice && $('.email-choice-close');
 
+  if (emailTrigger && emailChoice) {
+    emailTrigger.addEventListener('click', e => {
+      e.preventDefault();
+      emailChoice.showModal();
+    });
+
+    emailChoiceClose.addEventListener('click', () => emailChoice.close());
+    emailChoice.addEventListener('click', e => {
+      if (e.target === emailChoice) emailChoice.close();
+    });
+    emailChoice.addEventListener('cancel', () => emailChoice.close());
+  }
 
 })();
