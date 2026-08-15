@@ -570,6 +570,28 @@
             // { type: 'video', src: 'video/sample.mp4', label: '비디오 캡션' } // 영상을 넣고 싶으시면 이렇게 하세요!
           ]
         },
+    Invader: {
+          title: 'Invader',
+          cat: '유니티 프로그래밍',
+          year: '2026',
+          desc1: 'Invader는 원숭이가 바나나를 발사해 드론의 침공을 막는 Unity 기반 3D 아케이드 슈팅 게임이다. 플레이어는 제한 시간 동안 위아래로 이동하며 적의 탄환을 피하고, 스테이지가 진행될수록 강해지는 드론을 처치해 생존해야 한다.',
+          desc2: '간단한 조작 안에서 단계적으로 높아지는 난이도를 경험하도록 드론의 이동, 공격 주기와 생성 방식을 세 단계로 설계했다. 점수와 남은 시간 UI, 사운드, 시작·성공·실패 화면까지 연결해 하나의 완결된 플레이 흐름으로 구현하였다.',
+          sections: [
+            { label: 'Concept', body: '정글을 지키는 원숭이와 드론의 대결이라는 친근한 설정을 바탕으로, 짧은 시간 안에 규칙을 이해하고 반복 플레이할 수 있는 아케이드 슈팅 경험을 기획하였다. 플레이어는 방향키로 세로 이동하고 Space 키로 바나나를 발사한다. 단순한 입력 구조를 유지하면서도 적의 움직임과 공격 패턴이 달라지는 세 개의 스테이지를 배치해 플레이가 점차 긴장감 있게 전개되도록 구성하였다.' },
+            { label: 'Process', body: 'Unity와 C#으로 플레이어 이동과 발사, 드론의 이동·공격, 충돌 판정, 점수와 제한 시간, 스테이지 전환을 구현하였다. Stage 1에서는 네 대의 드론이 라인 형태로 왕복 이동하고, Stage 2부터 플레이어를 조준해 탄환을 발사한다. Stage 3에서는 드론이 랜덤 위치에 더 빠르게 생성되도록 하여 난이도를 높였다. GameMaster를 중심으로 적 생성과 승패 조건을 관리하고, 시작·게임·성공·실패 씬을 SceneLoader로 연결하였다.' },
+            { label: 'Outcome', body: '90초 생존을 목표로 하는 3D 아케이드 슈팅 게임을 완성하였다. 플레이어 피격 시 실패 화면으로, 제한 시간 생존 시 성공 화면으로 전환되며 재시작과 홈 이동까지 이어지는 전체 게임 루프를 구축했다. 복셀 스타일 캐릭터와 자연 배경, 발사·피격·폭발 사운드를 결합해 게임의 콘셉트와 조작 피드백을 명확하게 전달하였다.' }
+          ],
+          details: [
+            { k: '프로젝트 유형', v: 'Unity 3D 아케이드 게임' },
+            { k: '사용 툴', v: 'Unity 2022.3 · C# · URP' },
+            { k: '역할', v: '게임 기획 및 Unity 개발' },
+          ],
+          media: [
+            { type: 'img', src: 'img/Invader.png', label: 'Start' },
+            { type: 'img', src: 'img/Invader-success.png', label: 'Success' },
+            { type: 'web', src: 'https://github.com/yebum/Invader', label: 'GitHub' },
+          ]
+        },
     JalTayo: {
           title: '잘타요VR', // 🔧 최상단 화면에 크게 표시되는 대제목입니다
           cat: '가상융합서비스개발자경진대회', // 🔧 제목 위나 옆에 달리는 카테고리 태그입니다
@@ -596,6 +618,28 @@
             { type: 'pdf', src: 'https://drive.google.com/file/d/16KbAchqRCjYefDXWFpQZUtG6Avankvcl/view?usp=sharing', label: 'pdf' },
             { type: 'video', src: 'https://drive.google.com/file/d/1dBv6cmtXUyBU9nn36rhEE-YXPahZY590/view?usp=sharing', label: 'video' },
             // { type: 'video', src: 'video/sample.mp4', label: '비디오 캡션' } // 영상을 넣고 싶으시면 이렇게 하세요!
+          ]
+        },
+    PiratesStorm: {
+          title: 'PiratesStorm',
+          cat: '유니티 프로그래밍',
+          year: '2026',
+          desc1: 'PiratesStorm은 해적선을 조종해 적 함대를 격파하고 보물을 획득하는 Unity 기반 2D 슈팅 게임이다. 플레이어는 바다 위에서 적의 탄환을 피하며 점수와 코인을 모으고, 마지막 보스를 처치한 뒤 나타나는 보물상자에 도달해야 한다.',
+          desc2: '마우스 드래그와 터치 입력을 모두 지원하는 이동 방식, 자동 사격, 적 웨이브와 보스전, 체력과 보상 시스템을 하나의 게임 루프로 구성하였다. 반복되는 오브젝트에는 풀링을 적용하고 인트로·설명 팝업·성공 화면을 연결해 PC와 모바일에서 직관적으로 플레이할 수 있도록 구현하였다.',
+          sections: [
+            { label: 'Concept', body: '해적선 전투와 보물 탐험을 결합해 이동, 회피, 전투, 수집, 보스 공략으로 이어지는 캐주얼 슈팅 경험을 기획하였다. 플레이어는 마우스를 누른 채 드래그하거나 화면을 터치해 해적선을 움직이고, 자동으로 발사되는 무기로 적 함대를 공격한다. 적 처치로 점수와 코인을 획득하고 보스를 격파한 뒤 보물상자에 도달하는 명확한 목표를 설정하였다.' },
+            { label: 'Process', body: 'Unity와 C#으로 마우스·터치 기반 이동, 무기별 연속 사격, 적 체력과 공격, 코인 드롭, 웨이브 생성과 보스전을 구현하였다. 플레이어의 체력을 세 단계 UI로 시각화하고 충돌과 파괴 흐름을 연결했으며, 반복 생성되는 적과 투사체에는 오브젝트 풀링을 적용하였다. 보스가 파괴되면 보물상자가 등장하고 플레이어가 획득하면 성공 씬으로 이동하도록 구성하였다.' },
+            { label: 'Outcome', body: '인트로와 게임 설명부터 적 웨이브, 보스전, 보물 획득과 성공 화면까지 이어지는 2D 슈팅 게임을 완성하였다. 배경 반복, 파티클, 사운드, 점수·코인·체력 UI를 더해 전투 피드백을 강화했으며 PC의 마우스 입력과 모바일 터치 입력을 함께 지원하는 조작 체계를 구현하였다.' }
+          ],
+          details: [
+            { k: '프로젝트 유형', v: 'Unity 2D 슈팅 게임' },
+            { k: '사용 툴', v: 'Unity 2022.3 · C# · URP' },
+            { k: '역할', v: '게임 기획 및 Unity 개발' },
+          ],
+          media: [
+            { type: 'img', src: 'img/PiratesStorm.png', label: 'Start' },
+            { type: 'img', src: 'img/PiratesStorm-success.png', label: 'Success' },
+            { type: 'web', src: 'https://github.com/yebum/PiratesStorm', label: 'GitHub' },
           ]
         },
         TeamPL: {
