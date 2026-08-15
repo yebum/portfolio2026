@@ -574,12 +574,16 @@
           title: 'Invader',
           cat: '유니티 프로그래밍',
           year: '2026',
-          desc1: 'Invader는 원숭이가 바나나를 발사해 드론의 침공을 막는 Unity 기반 3D 아케이드 슈팅 게임이다. 플레이어는 제한 시간 동안 위아래로 이동하며 적의 탄환을 피하고, 스테이지가 진행될수록 강해지는 드론을 처치해 생존해야 한다.',
-          desc2: '간단한 조작 안에서 단계적으로 높아지는 난이도를 경험하도록 드론의 이동, 공격 주기와 생성 방식을 세 단계로 설계했다. 점수와 남은 시간 UI, 사운드, 시작·성공·실패 화면까지 연결해 하나의 완결된 플레이 흐름으로 구현하였다.',
+          desc1: 'Invader는 고전 슈팅 게임의 단순한 회피·발사 구조를 Unity의 컴포넌트, 충돌, 프리팹 생성과 상태 관리로 직접 구현해 보기 위해 기획한 3D 아케이드 게임이다. 익숙한 우주선 대신 원숭이가 바나나로 드론을 막는 설정을 더해 규칙은 즉시 이해되지만 시각적으로는 기억에 남는 게임을 목표로 했다.',
+          desc2: '플레이어는 90초 동안 방향키로 위아래를 이동하고 Space 키로 바나나를 발사한다. 처음에는 이동만 하는 드론을 상대하지만 이후 조준 사격과 랜덤 생성이 추가된다. 하나의 드론 프리팹이 스테이지 값에 따라 다른 행동을 하도록 설계하고, 시작·플레이·실패·성공 씬을 연결해 완결된 게임 루프로 제작했다.',
           sections: [
-            { label: 'Concept', body: '정글을 지키는 원숭이와 드론의 대결이라는 친근한 설정을 바탕으로, 짧은 시간 안에 규칙을 이해하고 반복 플레이할 수 있는 아케이드 슈팅 경험을 기획하였다. 플레이어는 방향키로 세로 이동하고 Space 키로 바나나를 발사한다. 단순한 입력 구조를 유지하면서도 적의 움직임과 공격 패턴이 달라지는 세 개의 스테이지를 배치해 플레이가 점차 긴장감 있게 전개되도록 구성하였다.' },
-            { label: 'Process', body: 'Unity와 C#으로 플레이어 이동과 발사, 드론의 이동·공격, 충돌 판정, 점수와 제한 시간, 스테이지 전환을 구현하였다. Stage 1에서는 네 대의 드론이 라인 형태로 왕복 이동하고, Stage 2부터 플레이어를 조준해 탄환을 발사한다. Stage 3에서는 드론이 랜덤 위치에 더 빠르게 생성되도록 하여 난이도를 높였다. GameMaster를 중심으로 적 생성과 승패 조건을 관리하고, 시작·게임·성공·실패 씬을 SceneLoader로 연결하였다.' },
-            { label: 'Outcome', body: '90초 생존을 목표로 하는 3D 아케이드 슈팅 게임을 완성하였다. 플레이어 피격 시 실패 화면으로, 제한 시간 생존 시 성공 화면으로 전환되며 재시작과 홈 이동까지 이어지는 전체 게임 루프를 구축했다. 복셀 스타일 캐릭터와 자연 배경, 발사·피격·폭발 사운드를 결합해 게임의 콘셉트와 조작 피드백을 명확하게 전달하였다.' }
+            { label: 'Planning', body: '유니티 프로그래밍에서 배운 입력 처리, 프리팹 생성, 충돌 이벤트와 씬 전환을 각각의 예제로 끝내지 않고 하나의 플레이 경험으로 연결하는 것을 출발점으로 삼았다. 조작은 위·아래 이동과 한 버튼 발사만 남겨 첫 플레이에서도 설명 없이 이해할 수 있게 했고, 대신 적의 규칙이 순차적으로 변하도록 난이도를 설계했다. Stage 1은 움직임과 명중을 익히는 구간, Stage 2는 조준 탄환을 피하는 구간, Stage 3은 빠른 랜덤 생성 속에서 90초까지 생존하는 구간이다. 정글의 원숭이와 드론이라는 대비, 바나나 총알이라는 유머를 사용해 학습용 슈팅 게임에 고유한 콘셉트를 부여했다.' },
+            { label: 'GameMaster.cs', body: 'GameMaster는 게임 전체의 상태 머신 역할을 한다. Start()에서 score, currentStage, isGameOver, isStageChanging, stage3Started와 Drone의 static 이동 상태를 초기화하고 원숭이 프리팹을 생성한 뒤 SpawnLineStage(1)을 호출한다. Update()는 플레이어 존재 여부, 90초 제한 시간, 스테이지 클리어를 매 프레임 검사한다. 플레이어 인스턴스가 null이면 Fail 씬, timeLimit가 0이면 Success 씬으로 이동한다. CheckStageClear()는 EnemyLine 태그의 개수가 0인지 확인해 1→2→3단계로 진행시키며, 중복 전환을 isStageChanging으로 차단한다. Stage 3은 SpawnRandomStage() 코루틴이 1.5초마다 제한된 Y 범위에 드론을 계속 생성한다. 점수는 Drone에서도 접근할 수 있도록 static score와 AddScore()로 공유하고 TextMeshPro UI를 갱신한다.' },
+            { label: 'Monkey.cs · Banana.cs', body: 'Monkey.Update()는 Input.GetKey로 지속 이동을, Input.GetKeyDown으로 한 번의 발사를 분리한다. 이동 결과를 -5.5~5.5 사이로 제한해 화면 밖 이탈을 막고, ShootBanana()는 BananaPos 위치에 프리팹을 생성하면서 발사음을 재생한다. Banana.cs는 생성된 바나나를 고정된 Z 평면에서 오른쪽으로 이동시키고 일정 시간이 지나면 자동 제거한다. EnemyBullet과 충돌하면 두 투사체를 함께 없애 방어 행동도 가능하게 했다. 원숭이가 피격되면 isDead를 먼저 true로 바꿔 중복 입력과 충돌을 차단하고, Collider와 자식 MeshRenderer를 비활성화한 뒤 0.5초 후 제거한다. 이 지연 덕분에 피격음이 재생된 후 GameMaster가 플레이어 소멸을 감지해 실패 씬으로 넘어간다.' },
+            { label: 'Drone.cs', body: 'Drone은 하나의 프리팹을 세 가지 적 패턴으로 재사용하도록 만든 핵심 스크립트다. SetStage(stage)가 isRandomEnemy, useFire, moveSpeedY, fireTime과 태그를 함께 바꾼다. Stage 1은 공격 없이 속도 3으로 라인 이동하고, Stage 2는 4초 간격 조준 사격을 추가하며, Stage 3은 개별 방향·속도 5·2초 사격을 사용한다. 라인형 드론은 lineYDir, lineTurnCount, isChangingDirection을 static으로 공유해 네 기체가 한 줄처럼 동시에 방향을 전환한다. 위아래 경계를 두 번 만나 왕복이 끝나면 EnemyLine 태그 전체를 찾아 X축으로 5만큼 전진시킨다. 랜덤형은 개별 randomYDir과 randomTurnCount를 가져 서로 독립적으로 움직인다. 바나나 충돌 시 이펙트와 사운드를 실행하고 GameMaster.AddScore()를 호출한 뒤 자신을 제거한다.' },
+            { label: 'EnemyBullet.cs', body: 'FireToMonkey()는 Monkey(Clone)을 찾고 firePos에 적 탄환을 만든 뒤 EnemyBullet.SetTarget()으로 현재 플레이어 위치를 전달한다. EnemyBullet은 시작점과 목표점의 Z값을 5로 고정하고 두 점의 차이를 normalized 벡터로 저장한다. 따라서 플레이어와의 거리가 달라도 speed 값만큼 일정하게 이동하며, 발사 뒤 플레이어가 움직여도 처음 계산한 직선 궤도를 유지한다. Update()에서는 dir × speed × Time.deltaTime으로 프레임 독립 이동을 적용한다. 바나나와 만나면 두 탄환을 모두 제거하고, 플레이어와 만나면 자신을 제거하도록 충돌 책임을 나눴다. 3D 씬을 사용하면서도 모든 전투 좌표를 같은 Z 평면에 고정해 2D 슈팅처럼 안정적으로 판정되게 한 것이 구현의 핵심이다.' },
+            { label: 'Scene Flow · Debugging', body: 'SceneLoader는 버튼 이벤트에서 Start, Invader01, Fail, Success 씬을 명시적으로 연결하고, 각 게임 오브젝트는 Player·Bullet·EnemyLine·EnemyRandom·TopBorder·BottomBorder 태그로 역할을 구분한다. 개발 중에는 프리팹, 발사 위치, 컴포넌트 참조와 현재 태그가 누락되는 상황을 빠르게 찾기 위해 각 분기마다 null 검사와 Debug.Log를 배치했다. 특히 라인형 적 여러 개가 경계에 동시에 닿을 때 방향 전환이 반복되는 문제는 isChangingDirection 플래그와 공유 상태로 제어했고, 사망 직후 입력·충돌이 다시 실행되는 문제는 isDead와 Collider 비활성화 순서로 해결했다.' },
+            { label: 'Outcome', body: '입력–발사–충돌–점수–스테이지–승패–씬 전환으로 이어지는 전체 게임 루프를 C# 스크립트로 완성했다. 단일 Drone 프리팹에 단계별 파라미터와 집단·개별 이동을 결합해 적 수를 늘리지 않고도 난이도 변화를 만들었으며, 코루틴과 상태 플래그로 지속 생성과 중복 실행을 제어했다. 이 프로젝트를 통해 개별 기능을 작성하는 것보다 각 스크립트가 어떤 상태를 소유하고 어떤 이벤트로 서로 연결되는지를 설계하는 일이 게임 프로그래밍의 핵심이라는 점을 배웠다.' }
           ],
           details: [
             { k: '프로젝트 유형', v: 'Unity 3D 아케이드 게임' },
@@ -588,8 +592,12 @@
           ],
           media: [
             { type: 'img', src: 'img/Invader.png', label: 'Start' },
-            { type: 'img', src: 'img/Invader-success.png', label: 'Success' },
+            { type: 'web', src: 'https://github.com/yebum/Invader/blob/main/Assets/Scripts/GameMaster.cs', label: 'GameMaster.cs' },
+            { type: 'web', src: 'https://github.com/yebum/Invader/blob/main/Assets/Scripts/Monkey.cs', label: 'Monkey.cs' },
+            { type: 'web', src: 'https://github.com/yebum/Invader/blob/main/Assets/Scripts/Drone.cs', label: 'Drone.cs' },
+            { type: 'web', src: 'https://github.com/yebum/Invader/blob/main/Assets/Scripts/EnemyBullet.cs', label: 'EnemyBullet.cs' },
             { type: 'web', src: 'https://github.com/yebum/Invader', label: 'GitHub' },
+            { type: 'img', src: 'img/Invader-success.png', label: 'Success' },
           ]
         },
     JalTayo: {
@@ -624,12 +632,17 @@
           title: 'PiratesStorm',
           cat: '유니티 프로그래밍',
           year: '2026',
-          desc1: 'PiratesStorm은 해적선을 조종해 적 함대를 격파하고 보물을 획득하는 Unity 기반 2D 슈팅 게임이다. 플레이어는 바다 위에서 적의 탄환을 피하며 점수와 코인을 모으고, 마지막 보스를 처치한 뒤 나타나는 보물상자에 도달해야 한다.',
-          desc2: '마우스 드래그와 터치 입력을 모두 지원하는 이동 방식, 자동 사격, 적 웨이브와 보스전, 체력과 보상 시스템을 하나의 게임 루프로 구성하였다. 반복되는 오브젝트에는 풀링을 적용하고 인트로·설명 팝업·성공 화면을 연결해 PC와 모바일에서 직관적으로 플레이할 수 있도록 구현하였다.',
+          desc1: 'PiratesStorm은 슈팅 게임의 전투 시스템을 더 깊게 분석하기 위해 기획한 Unity 기반 2D 세로 슈팅 게임이다. 단순히 적을 없애 점수를 높이는 구조에서 벗어나 해적선을 조종해 함대를 돌파하고 코인을 모은 뒤 보스를 격파해 보물상자를 획득하는 모험 서사를 게임의 목표로 연결했다.',
+          desc2: '마우스 드래그와 모바일 터치로 이동하고 무기는 자동 발사된다. 시간표 기반 적 웨이브, Catmull-Rom 경로 이동, 4단계 무기 패턴, 체력·무적 시간, 확률형 코인 드롭, 오브젝트 풀링과 무한 배경을 각각 독립된 C# 컴포넌트로 설계했다. 마지막에는 보스–보물상자–Success 씬으로 이어지는 명확한 클리어 조건을 구현했다.',
           sections: [
-            { label: 'Concept', body: '해적선 전투와 보물 탐험을 결합해 이동, 회피, 전투, 수집, 보스 공략으로 이어지는 캐주얼 슈팅 경험을 기획하였다. 플레이어는 마우스를 누른 채 드래그하거나 화면을 터치해 해적선을 움직이고, 자동으로 발사되는 무기로 적 함대를 공격한다. 적 처치로 점수와 코인을 획득하고 보스를 격파한 뒤 보물상자에 도달하는 명확한 목표를 설정하였다.' },
-            { label: 'Process', body: 'Unity와 C#으로 마우스·터치 기반 이동, 무기별 연속 사격, 적 체력과 공격, 코인 드롭, 웨이브 생성과 보스전을 구현하였다. 플레이어의 체력을 세 단계 UI로 시각화하고 충돌과 파괴 흐름을 연결했으며, 반복 생성되는 적과 투사체에는 오브젝트 풀링을 적용하였다. 보스가 파괴되면 보물상자가 등장하고 플레이어가 획득하면 성공 씬으로 이동하도록 구성하였다.' },
-            { label: 'Outcome', body: '인트로와 게임 설명부터 적 웨이브, 보스전, 보물 획득과 성공 화면까지 이어지는 2D 슈팅 게임을 완성하였다. 배경 반복, 파티클, 사운드, 점수·코인·체력 UI를 더해 전투 피드백을 강화했으며 PC의 마우스 입력과 모바일 터치 입력을 함께 지원하는 조작 체계를 구현하였다.' }
+            { label: 'Planning', body: '세로 슈팅의 기본 구조를 구현하는 데서 끝내지 않고 플레이어가 왜 계속 전진해야 하는지를 설명하는 목표가 필요하다고 판단했다. 그래서 우주선 전투 구조를 해적선의 항해로 재해석하고, 적 처치–코인 수집–함대 돌파–보스 격파–보물 획득의 순서로 게임 루프를 기획했다. 공격은 자동화해 사용자가 회피와 위치 선정에 집중하도록 했고, PC에서는 마우스 드래그, 모바일에서는 한 손가락 터치로 같은 감각을 제공하도록 입력을 나눴다. 웨이브마다 경로·수량·속도·사격 확률을 데이터처럼 조절할 수 있게 해 코드 수정 없이도 난이도와 리듬을 설계하는 것을 목표로 했다.' },
+            { label: 'LevelController.cs · Wave.cs', body: 'LevelController는 enemyWaves 배열의 timeToStart와 wave 프리팹을 읽어 각 웨이브를 독립 코루틴으로 예약한다. 플레이어가 살아 있을 때만 웨이브를 생성하고, 파워업과 배경 오브젝트도 별도 코루틴으로 주기적으로 만든다. Wave는 count, speed, timeBetween, pathPoints, Loop와 Shooting 값을 한 묶음으로 관리한다. CreateEnemyWave()가 적을 순차 생성한 뒤 FollowThePath에 경로와 속도를, Enemy에 shotChance와 발사 시간 범위를 전달한다. 경로는 Catmull-Rom 보간으로 계산하며 OnDrawGizmos에서 곡선을 미리 그려 에디터에서 전투 동선을 확인할 수 있다. 이 구조를 통해 스크립트를 다시 작성하지 않고 Inspector 값과 경로 포인트만 바꿔 직선·곡선·루프형 함대를 구성했다.' },
+            { label: 'PlayerMoving.cs · PlayerShooting.cs', body: 'PlayerMoving은 Camera.ViewportToWorldPoint()로 화면 좌하단과 우상단을 월드 좌표로 변환하고 Borders의 오프셋을 적용해 해상도에 대응하는 이동 범위를 계산한다. PC에서는 Input.GetMouseButton(0), 모바일에서는 touchCount가 1일 때 입력 위치를 월드 좌표로 바꾸고 Vector3.MoveTowards로 부드럽게 이동한다. 마지막에는 Mathf.Clamp로 항상 경계 안에 고정한다. PlayerShooting은 Time.time과 nextFire로 자동 발사 주기를 제어하고 weaponPower 1~4를 switch로 분기한다. 1단계 중앙 1발, 2단계 좌우 2발, 3단계 중앙과 ±5도 3발, 4단계 ±15도까지 포함한 5발 패턴으로 확장된다. 각 포구의 ParticleSystem을 함께 재생해 파워 상승을 시각적으로 전달한다.' },
+            { label: 'Player.cs · Projectile.cs · Enemy.cs', body: 'Player는 체력을 3으로 초기화하고 현재 체력에 맞는 UI 스프라이트를 교체한다. GetDamage()는 nextDamage 이전의 연속 충돌을 무시해 무적 시간을 만들고, 생존 시 ShieldRoutine()을 다시 시작해 실드 표시 시간을 갱신한다. Projectile은 enemyBullet bool 하나로 소속을 구분해 적 탄환은 Player.GetDamage(), 플레이어 탄환은 Enemy.GetDamage()를 호출한다. Enemy는 체력, 발사 확률과 간격, 보스 여부를 소유한다. Invoke로 무작위 발사 타이밍을 반복 예약하고 체력이 0이 되면 점수 10점, 파괴 VFX와 사운드를 처리한다. 일반 적은 설정 확률로 코인을 드롭하지만 보스는 treasureChestPrefab을 생성한다. 같은 피격 시스템 안에서 일반 적과 보스의 보상을 분기해 전투의 마지막 목표를 만들었다.' },
+            { label: 'PoolingController.cs · RepeatingBackground.cs', body: 'PoolingController는 풀링할 프리팹과 초기 수량을 배열로 받아 Start()에서 미리 Instantiate한 뒤 비활성화한다. GetPoolingObject()는 이름이 일치하는 비활성 오브젝트를 반환하고, 모두 사용 중이면 AddNewObject()로 풀을 확장한다. 반복적으로 등장하는 오브젝트의 생성·삭제 비용을 줄이면서 수량 부족에도 멈추지 않는 구조다. RepeatingBackground는 배경의 Y좌표가 -verticalSize 아래로 내려가면 verticalSize × 2만큼 위로 옮겨 두 장의 배경이 이어지게 한다. 개발 중 부모 Scale 때문에 월드 좌표가 예상과 달라 배경이 겹치는 문제가 있었고, 카메라 상·하단과 이동 전후 좌표를 Debug.Log로 비교해 verticalSize 기준을 보정했다.' },
+            { label: 'GameController.cs · TreasureChest.cs', body: 'GameController는 싱글톤으로 점수, 코인, 게임오버 UI와 씬 재시작을 통합한다. Awake()에서 Score와 CoinsText 태그로 UI를 찾고, AddScore()와 AddCoin()이 값과 텍스트를 동시에 갱신한다. 플레이어가 파괴되면 GameOverCor()가 짧은 지연 뒤 게임오버 패널과 최종 점수를 순서대로 표시한다. 보스가 사망하면 Enemy.Destruction()이 보물상자를 지정 위치 또는 보스 위 오프셋에 생성한다. TreasureChest.OnTriggerEnter2D()는 Player 태그를 확인하고 isCollected로 중복 실행을 막은 뒤 Success 씬을 로드한다. SceneButtonController는 인트로·게임·재시작·홈 이동을 담당하고 PopupController는 인트로의 조작 설명창을 SetActive로 제어한다.' },
+            { label: 'Architecture · Debugging', body: '기능을 한 스크립트에 몰아넣지 않고 입력, 발사, 피해, 적, 웨이브, 레벨, 풀링, UI와 씬 전환으로 책임을 분리했다. 서로 연결해야 하는 전역 시스템은 instance를 사용하고, 웨이브별 변화가 필요한 값은 Serializable 클래스로 Inspector에 노출했다. 충돌은 Player·Enemy 태그와 Projectile.enemyBullet로 방향을 구분하고, 중복 피해는 nextDamage, 중복 보물 획득은 isCollected, 반복 발사는 Invoke와 CancelInvoke로 제어했다. 배경 위치와 카메라 범위처럼 화면에서만 보이는 오류는 좌표 로그를 추가해 원인을 확인했다. 이 과정에서 동작 구현뿐 아니라 상태의 소유자와 스크립트 사이의 호출 방향을 정리해야 기능이 늘어나도 수정 범위를 통제할 수 있다는 점을 배웠다.' },
+            { label: 'Outcome', body: '시간표 기반 웨이브와 곡선 경로, 자동 사격과 4단계 무기, 체력·실드·점수·코인, 보스와 보물상자, 무한 배경과 사운드를 결합한 2D 슈팅 게임을 완성했다. 마우스와 터치 입력을 분리해 PC와 모바일 조작을 함께 지원하고, 인트로의 설명 팝업부터 게임오버·재시작·성공 화면까지 전체 사용자 흐름을 연결했다. PiratesStorm을 통해 반복 생성이 많은 슈팅 장르에서 데이터 기반 웨이브 설계, 오브젝트 재사용, 데미지 전달과 보상 분기가 어떻게 하나의 게임 루프를 만드는지 구체적으로 이해했다.' }
           ],
           details: [
             { k: '프로젝트 유형', v: 'Unity 2D 슈팅 게임' },
@@ -638,8 +651,13 @@
           ],
           media: [
             { type: 'img', src: 'img/PiratesStorm.png', label: 'Start' },
-            { type: 'img', src: 'img/PiratesStorm-success.png', label: 'Success' },
+            { type: 'web', src: 'https://github.com/yebum/PiratesStorm/blob/main/Assets/MySpaceShooter/Scipts/Wave.cs', label: 'Wave.cs' },
+            { type: 'web', src: 'https://github.com/yebum/PiratesStorm/blob/main/Assets/MySpaceShooter/Scipts/PlayerShooting.cs', label: 'PlayerShooting.cs' },
+            { type: 'web', src: 'https://github.com/yebum/PiratesStorm/blob/main/Assets/MySpaceShooter/Scipts/Enemy.cs', label: 'Enemy.cs' },
+            { type: 'web', src: 'https://github.com/yebum/PiratesStorm/blob/main/Assets/MySpaceShooter/Scipts/PoolingController.cs', label: 'PoolingController.cs' },
+            { type: 'web', src: 'https://github.com/yebum/PiratesStorm/blob/main/Assets/Pirates/Scripts/TreasureChest.cs', label: 'TreasureChest.cs' },
             { type: 'web', src: 'https://github.com/yebum/PiratesStorm', label: 'GitHub' },
+            { type: 'img', src: 'img/PiratesStorm-success.png', label: 'Success' },
           ]
         },
         TeamPL: {
