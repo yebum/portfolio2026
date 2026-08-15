@@ -307,9 +307,13 @@
       max-width: 1400px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 80px;
       align-items: center;
+    }
+
+    .ss-inner > * {
+      min-width: 0;
     }
 
     /* 텍스트 블록 */
@@ -340,6 +344,8 @@
     ══════════════════════════════════ */
     .media-fig {
       width: 100%;
+      min-width: 0;
+      max-width: 100%;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -469,7 +475,9 @@
     /* GitHub source code */
     .code-wrap {
       width: 100%;
-      height: 520px;
+      min-width: 0;
+      max-width: 100%;
+      aspect-ratio: 16/10;
       border-radius: 8px;
       overflow: hidden;
       background: #0d1117;
@@ -480,10 +488,16 @@
 
     .code-view {
       flex: 1;
+      width: 100%;
+      min-width: 0;
       min-height: 0;
       margin: 0;
       padding: 18px 0;
-      overflow: auto;
+      overflow-x: auto;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      -webkit-overflow-scrolling: touch;
       color: #e6edf3;
       background: #0d1117;
       font-family: var(--mo);
@@ -494,12 +508,15 @@
 
     .code-view code {
       display: block;
-      min-width: max-content;
+      width: max-content;
+      min-width: 100%;
       counter-reset: code-line;
     }
 
     .code-line {
       display: block;
+      width: max-content;
+      min-width: 100%;
       min-height: 1.75em;
       padding-right: 20px;
       white-space: pre;
@@ -571,9 +588,6 @@
         height: 400px;
       }
 
-      .code-wrap {
-        height: 420px;
-      }
     }
 
     /* 플레이스홀더 */
