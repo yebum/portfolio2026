@@ -466,9 +466,113 @@
       background: var(--ac2);
     }
 
+    /* GitHub source code */
+    .code-wrap {
+      width: 100%;
+      height: 520px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #0d1117;
+      border: 1px solid var(--div);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .code-view {
+      flex: 1;
+      min-height: 0;
+      margin: 0;
+      padding: 18px 0;
+      overflow: auto;
+      color: #e6edf3;
+      background: #0d1117;
+      font-family: var(--mo);
+      font-size: 12px;
+      line-height: 1.75;
+      tab-size: 4;
+    }
+
+    .code-view code {
+      display: block;
+      min-width: max-content;
+      counter-reset: code-line;
+    }
+
+    .code-line {
+      display: block;
+      min-height: 1.75em;
+      padding-right: 20px;
+      white-space: pre;
+      counter-increment: code-line;
+    }
+
+    .code-line::before {
+      content: counter(code-line);
+      display: inline-block;
+      width: 44px;
+      margin-right: 18px;
+      padding-right: 12px;
+      color: #6e7681;
+      border-right: 1px solid #21262d;
+      text-align: right;
+      user-select: none;
+    }
+
+    .code-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100%;
+      padding: 32px;
+      color: #8b949e;
+      font-family: var(--mo);
+      font-size: 11px;
+      letter-spacing: .04em;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .code-status.is-error {
+      color: #ff7b72;
+    }
+
+    .github-link-preview {
+      min-height: 280px;
+      padding: 38px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      color: #e6edf3;
+      background: #0d1117;
+      text-align: center;
+    }
+
+    .github-link-preview svg {
+      width: 46px;
+      height: 46px;
+      color: var(--ac);
+    }
+
+    .github-link-preview strong {
+      font-family: var(--mo);
+      font-size: 14px;
+      letter-spacing: .05em;
+    }
+
+    .github-link-preview span {
+      color: #8b949e;
+      font-size: 12px;
+    }
+
     @media(max-width:900px) {
       .pdf-wrap {
         height: 400px;
+      }
+
+      .code-wrap {
+        height: 420px;
       }
     }
 
@@ -1347,6 +1451,57 @@
         }).join('').trim();
       }
 
+      function escapeAttribute(value) {
+        return String(value || '').replace(/[&<>"']/g, function (character) {
+          return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+          }[character];
+        });
+      }
+
+      function toGitHubRawUrl(sourceUrl) {
+        var match = String(sourceUrl || '').match(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/);
+        if (!match) return '';
+        return 'https://raw.githubusercontent.com/' + match[1] + '/' + match[2] + '/' + match[3] + '/' + match[4];
+      }
+
+      function hydrateCodeViews(root) {
+        var scope = root || document;
+        scope.querySelectorAll('[data-code-src]').forEach(function (codeElement) {
+          var rawUrl = codeElement.getAttribute('data-code-src');
+          fetch(rawUrl, { cache: 'force-cache' })
+            .then(function (response) {
+              if (!response.ok) throw new Error('HTTP ' + response.status);
+              return response.arrayBuffer();
+            })
+            .then(function (sourceBuffer) {
+              var sourceCode;
+              try {
+                sourceCode = new TextDecoder('utf-8', { fatal: true }).decode(sourceBuffer);
+              } catch {
+                sourceCode = new TextDecoder('euc-kr').decode(sourceBuffer);
+              }
+              var fragment = document.createDocumentFragment();
+              sourceCode.replace(/\r\n?/g, '\n').split('\n').forEach(function (line) {
+                var row = document.createElement('span');
+                row.className = 'code-line';
+                row.textContent = line || ' ';
+                fragment.appendChild(row);
+              });
+              codeElement.textContent = '';
+              codeElement.appendChild(fragment);
+            })
+            .catch(function () {
+              codeElement.className = 'code-status is-error';
+              codeElement.textContent = '코드를 불러오지 못했습니다. 아래 버튼으로 GitHub에서 확인해 주세요.';
+            });
+        });
+      }
+
       function renderMedia(m, idx) {
         if (!m) {
           return '<div class="media-ph"><span class="ph-num">0' + (idx + 1) + '</span></div>';
@@ -1434,6 +1589,8 @@
         }
 
         if (m.type === 'web') {
+          var sourceUrl = m.src || '';
+          var rawCodeUrl = toGitHubRawUrl(sourceUrl);
           var webIcon = '<svg viewBox="0 0 14 14" stroke-width="1.4" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">'
             + '<circle cx="7" cy="7" r="6"/>'
             + '<ellipse cx="7" cy="7" rx="3" ry="6"/>'
@@ -1442,14 +1599,46 @@
 
           var extIcon = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12L12 2M12 2H6M12 2V8"/></svg>';
 
+          if (rawCodeUrl) {
+            var codeIcon = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">'
+              + '<path d="M5 3L1.5 7 5 11M9 3L12.5 7 9 11"/>'
+              + '</svg>';
+
+            return '<figure class="media-fig media-code">'
+              + '<div class="code-wrap">'
+              + '<pre class="code-view"><code data-code-src="' + escapeAttribute(rawCodeUrl) + '"><span class="code-status">스크립트를 불러오는 중입니다...</span></code></pre>'
+              + '<div class="pdf-toolbar">'
+              + '<span class="pdf-label-tag">' + codeIcon + escapeAttribute(m.label || 'C# Source') + '</span>'
+              + '<a href="' + escapeAttribute(sourceUrl) + '" target="_blank" rel="noopener noreferrer" class="pdf-open-btn">'
+              + extIcon + 'GitHub에서 열기</a>'
+              + '</div></div>'
+              + (m.label ? '<figcaption>' + escapeAttribute(m.label) + '</figcaption>' : '')
+              + '</figure>';
+          }
+
+          if (/^https:\/\/github\.com\//.test(sourceUrl)) {
+            var githubIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .7a11.5 11.5 0 0 0-3.64 22.4c.58.1.79-.25.79-.56v-2.24c-3.22.7-3.9-1.37-3.9-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.57-.29-5.27-1.28-5.27-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.16 1.18a10.95 10.95 0 0 1 5.76 0c2.19-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.71 5.39-5.29 5.68.42.36.79 1.06.79 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/></svg>';
+            return '<figure class="media-fig media-web">'
+              + '<div class="web-wrap" style="border-radius:8px; overflow:hidden; background:var(--card); border:1px solid var(--div);">'
+              + '<div class="github-link-preview">' + githubIcon
+              + '<strong>' + escapeAttribute(m.label || 'GitHub Repository') + '</strong>'
+              + '<span>프로젝트의 전체 소스와 커밋 기록을 확인할 수 있습니다.</span></div>'
+              + '<div class="pdf-toolbar">'
+              + '<span class="pdf-label-tag">' + webIcon + 'GitHub Repository</span>'
+              + '<a href="' + escapeAttribute(sourceUrl) + '" target="_blank" rel="noopener noreferrer" class="pdf-open-btn">'
+              + extIcon + 'GitHub에서 열기</a></div></div>'
+              + (m.label ? '<figcaption>' + escapeAttribute(m.label) + '</figcaption>' : '')
+              + '</figure>';
+          }
+
           return '<figure class="media-fig media-web">'
             + '<div class="web-wrap" style="position:relative; width:100%; aspect-ratio:16/9; border-radius:8px; overflow:hidden; background:var(--card); border:1px solid var(--div); display:flex; flex-direction:column;">'
-            + '<iframe src="' + (m.src || '') + '" title="' + (m.label || 'Web Prototype') + '" frameborder="0" loading="lazy" style="width:100%; flex:1; border:none; display:block; background:#fff;"></iframe>'
+            + '<iframe src="' + escapeAttribute(sourceUrl) + '" title="' + escapeAttribute(m.label || 'Web Prototype') + '" frameborder="0" loading="lazy" style="width:100%; flex:1; border:none; display:block; background:#fff;"></iframe>'
             + '<div class="pdf-toolbar" style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-top:1px solid var(--div); background:var(--nav); flex-shrink:0;">'
             + '<span class="pdf-label-tag" style="font-family:var(--mo); font-size:8px; letter-spacing:.18em; text-transform:uppercase; color:var(--mid); display:flex; align-items:center; gap:6px;">'
             + '<span style="width:12px; height:12px; stroke:var(--ac); fill:none; display:flex;">' + webIcon + '</span>' + (m.label || 'Web Prototype')
             + '</span>'
-            + '<a href="' + (m.src || '') + '" target="_blank" rel="noopener" class="pdf-open-btn" style="display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:20px; background:transparent; border:1px solid var(--div); color:var(--mid); font-size:10px; text-decoration:none;">'
+            + '<a href="' + escapeAttribute(sourceUrl) + '" target="_blank" rel="noopener noreferrer" class="pdf-open-btn" style="display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:20px; background:transparent; border:1px solid var(--div); color:var(--mid); font-size:10px; text-decoration:none;">'
             + '<span style="width:12px; height:12px; display:flex;">' + extIcon + '</span>새 탭에서 열기</a>'
             + '</div>'
             + '</div>'
@@ -1527,6 +1716,7 @@
           + '</div></section>';
       });
       document.getElementById('proj-sections').innerHTML = sectionsHTML;
+      hydrateCodeViews(document.getElementById('proj-sections'));
 
       /* 추가 미디어 그리드 */
       var extraMedia = mediaArr.slice(sections.length);
@@ -1535,6 +1725,7 @@
           + extraMedia.map(function (m, i) { return renderMedia(m, sections.length + i); }).join('')
           + '</div></section>';
         document.getElementById('proj-extra-media').innerHTML = extraHTML;
+        hydrateCodeViews(document.getElementById('proj-extra-media'));
       }
 
       /* 상세 정보 */
