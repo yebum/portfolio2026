@@ -941,6 +941,28 @@
          설정한 data-project="키이름" 값과 완전히 일치해야만 연결됩니다.
       ──────────────────────────────────────────────────────────── */
       const PROJECTS = {
+        SilgamSujevi: {
+          title: '실감수제비',
+          cat: '2026 SUMMER WEEK AI+XR 공모전',
+          year: '2026',
+          desc1: '실감수제비는 제주 바닷가에서 가족과 함께했던 물수제비의 기억을 MediaPipe 동작 인식과 실시간 3D 환경으로 재현한 Unity 6 기반의 체험형 게임이다. 사용자는 카메라 앞에서 양팔을 T자로 벌려 준비한 뒤 한쪽 팔을 옆으로 크게 스윙하며 직접 물수제비를 던진다.',
+          desc2: '캐릭터 에셋은 Varco 3D로 제작하고, 배경음악은 Suno AI를 활용해 구성하였다. Codex를 활용해 게임의 입력·상태·물리·점수 시스템을 개발했으며, 실제 팔 동작이 돌의 발사 방향과 속도, 회전, 물 위 바운스 횟수로 이어지도록 설계하였다.',
+          sections: [
+            { label: 'Concept', body: '어릴 때 제주 바닷가에서 돌을 고르고 물수제비를 던지던 기억을, 관객이 화면으로 바라보는 콘텐츠가 아니라 직접 몸을 움직여 다시 경험하는 놀이로 확장하고자 하였다. 물수제비라는 단순한 행위에 캐릭터, 바다, 물보라, 점수와 재도전의 흐름을 더해 누구나 짧은 시간 안에 이해하고 참여할 수 있는 실감형 체험을 구성하였다.' },
+            { label: 'Process', body: 'Varco 3D를 활용해 게임의 주인공 캐릭터 에셋을 제작하고, Unity 6에서 제주 바닷가 환경과 물 셰이더, 물수제비 돌, 장식 오브젝트를 하나의 플레이 공간으로 구성하였다. 사용자의 움직임은 Python 기반 MediaPipe 포즈 브리지에서 어깨·팔꿈치·손목의 위치를 추적하고, T자 준비 자세와 옆 방향 스윙을 판정해 localhost UDP로 Unity에 전달한다. Unity에서는 수신된 동작 정보를 캐릭터 팔 리깅과 돌 발사 입력에 연결하고, Codex를 활용해 게임 시작·플레이·결과·재도전 상태와 로컬 TOP 10 리더보드를 개발하였다. 돌의 속도, 물 진입 각도, 공격 각도, 회전량, 수면 충돌 시 양력을 계산해 바운스를 결정하도록 구현했으며, Suno AI로 제작한 배경음악과 바다 ambience, 투척·물보라·성공 효과음을 결합해 체험의 몰입감을 높였다.' },
+            { label: 'Outcome', body: '최종적으로 사용자의 실제 팔 동작을 통해 캐릭터가 반응하고, 돌이 물 위를 튕기며, 결과가 점수와 리더보드로 이어지는 카메라 기반 인터랙티브 게임 프로토타입을 완성하였다. 준비 자세와 스윙 동작을 분리해 의도하지 않은 발사를 줄이고, 물리 조건에 따라 매번 다른 물수제비 결과가 나오도록 구성했다. 이를 통해 생성형 3D 에셋과 AI 음악을 Unity 게임 개발 및 컴퓨터 비전 입력과 결합하는 제작 과정을 경험하였다.' }
+          ],
+          details: [
+            { k: '프로젝트 유형', v: 'AI+XR 체험형 게임' },
+            { k: '사용 도구', v: 'Unity 6 · MediaPipe · OpenCV · Varco 3D · Suno AI · Codex' },
+            { k: '역할', v: '기획 · 캐릭터 에셋 제작 · 게임 개발' },
+          ],
+          media: [
+            { type: 'img', src: 'img/SilgamSujevi.jpg', label: 'Gameplay Thumbnail' },
+            { type: 'youtube', src: 'https://youtu.be/MQ4IRCMCQCo', label: '실감수제비 시연 영상' },
+            { type: 'web', src: 'https://github.com/yebum/JejuStoneSkippingXR', label: 'GitHub Repository' },
+          ]
+        },
         GetTheOceanSummerReady: {
           title: 'GET THE OCEAN SUMMER READY',
           cat: '부산국제마케팅광고제 YOUNG STARS 경진대회',
