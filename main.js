@@ -461,6 +461,28 @@
        details 배열 → { k:"항목명", v:"내용" }
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   const PROJECTS = {
+     TimeOfExtinction: {
+      title: '소멸의시간',
+      cat: 'KALEIDOSCOPE : 만화경',
+      year: '2026',
+      desc1: '잠비나이의 공연 〈소멸의시간〉을 위해 제작한 오디오비주얼 프로젝트이다. 공연 음악의 밀도와 감정의 흐름을 시각적 움직임으로 확장하고, 무대 위의 사운드와 이미지가 하나의 장면처럼 느껴지도록 구성하였다.',
+      desc2: 'TouchDesigner의 노드 기반 네트워크에서 잉크가 번지고 폭발하는 듯한 유기적 이미지를 만들고, 이를 대형 LED 스크린과 공연 공간에 맞게 송출하였다. 관객이 음악의 에너지를 색과 움직임으로 함께 경험할 수 있도록 실시간 미디어아트의 가능성을 탐구한 작업이다.',
+      sections: [
+        { label: 'Concept', body: '〈소멸의시간〉은 잠비나이의 음악이 가진 강한 에너지와 긴장, 그리고 사라지고 다시 생성되는 감정의 흐름을 시각적으로 확장하는 데서 출발하였다. 고정된 이미지를 보여주는 대신 잉크가 퍼지고 서로 충돌하며 형태를 바꾸는 추상적 풍경을 통해, 음악이 공간 안에서 번져 나가는 듯한 감각을 만들고자 하였다. 어두운 무대 위에서 청록과 백색의 흐름이 강하게 대비되도록 구성해 공연의 몰입도를 높이고, 음악과 영상이 서로 독립된 요소가 아니라 하나의 오디오비주얼 경험으로 인식되도록 설계하였다.' },
+        { label: 'Process', body: 'TouchDesigner에서 audio_color_visual 네트워크를 중심으로 영상 소스와 컬러, 움직임과 합성 흐름을 노드 단위로 구성하였다. 잉크 스톰처럼 번지는 텍스처와 강한 명암 대비를 조합해 공연장의 대형 스크린에서도 형태가 선명하게 읽히도록 조정했으며, 장면의 밀도와 색 변화를 음악의 흐름에 맞춰 사용할 수 있도록 제작하였다. 실제 공연 환경에서는 화면 비율과 밝기, 관객의 시야에서 비주얼이 차지하는 밀도를 고려해 송출 이미지를 점검하고, 무대와 관객 사이의 거리에서도 시각적 에너지가 유지되도록 구성하였다.' },
+        { label: 'Outcome', body: '최종적으로 잠비나이의 〈소멸의시간〉 공연에서 사용할 수 있는 오디오비주얼 콘텐츠를 제작하고, 실제 공연 현장의 LED 스크린에 상영하였다. 추상적인 잉크와 폭풍의 이미지를 통해 음악의 감정적 강도와 무대의 분위기를 시각화했으며, TouchDesigner 기반의 실시간 미디어아트 제작부터 공연 환경에 맞춘 화면 구성과 송출까지 경험하였다.' }
+      ],
+      details: [
+        { k: '프로젝트 유형', v: '공연 오디오비주얼' },
+        { k: '사용 도구', v: 'TouchDesigner · MCP' },
+        { k: '역할', v: '오디오비주얼 기획 · 제작 · 공연 송출' },
+      ],
+      media: [
+        { type: 'img', src: 'img/TimeOfExtinction.jpg', label: 'Live Performance' },
+        { type: 'img', src: 'img/TimeOfExtinction-TouchDesigner.png', label: 'TouchDesigner Network' },
+        { type: 'youtube', src: 'https://youtu.be/ok3533ZfwyQ', label: 'Performance Video' },
+      ]
+    },
     SilgamSujevi: {
       title: '실감수제비',
       cat: '2026 SUMMER WEEK AI+XR 공모전',
@@ -478,7 +500,7 @@
         { k: '역할', v: '기획 · 캐릭터 에셋 제작 · 게임 개발' },
       ],
       media: [
-        { type: 'img', src: 'img/SilgamSujevi.jpg', label: 'Gameplay Thumbnail' },
+        { type: 'img', src: 'img/SilgamSujevi.png', label: 'Gameplay Thumbnail' },
         { type: 'youtube', src: 'https://youtu.be/MQ4IRCMCQCo', label: '실감수제비 시연 영상' },
         { type: 'web', src: 'https://github.com/yebum/JejuStoneSkippingXR', label: 'GitHub Repository' },
       ]
@@ -503,28 +525,6 @@
         { type: 'img', src: 'img/YoungStars.jpg', label: '참가 증명서' },
         { type: 'img', src: 'img/GetTheOceanSummerReady.jpg', label: 'Presentation Board' },
         { type: 'youtube', src: 'https://youtu.be/nTv2XIjAabg', label: 'Campaign Video' },
-      ]
-    },
-    TimeOfExtinction: {
-      title: '소멸의시간',
-      cat: 'KALEIDOSCOPE : 만화경',
-      year: '2026',
-      desc1: '잠비나이의 공연 〈소멸의시간〉을 위해 제작한 오디오비주얼 프로젝트이다. 공연 음악의 밀도와 감정의 흐름을 시각적 움직임으로 확장하고, 무대 위의 사운드와 이미지가 하나의 장면처럼 느껴지도록 구성하였다.',
-      desc2: 'TouchDesigner의 노드 기반 네트워크에서 잉크가 번지고 폭발하는 듯한 유기적 이미지를 만들고, 이를 대형 LED 스크린과 공연 공간에 맞게 송출하였다. 관객이 음악의 에너지를 색과 움직임으로 함께 경험할 수 있도록 실시간 미디어아트의 가능성을 탐구한 작업이다.',
-      sections: [
-        { label: 'Concept', body: '〈소멸의시간〉은 잠비나이의 음악이 가진 강한 에너지와 긴장, 그리고 사라지고 다시 생성되는 감정의 흐름을 시각적으로 확장하는 데서 출발하였다. 고정된 이미지를 보여주는 대신 잉크가 퍼지고 서로 충돌하며 형태를 바꾸는 추상적 풍경을 통해, 음악이 공간 안에서 번져 나가는 듯한 감각을 만들고자 하였다. 어두운 무대 위에서 청록과 백색의 흐름이 강하게 대비되도록 구성해 공연의 몰입도를 높이고, 음악과 영상이 서로 독립된 요소가 아니라 하나의 오디오비주얼 경험으로 인식되도록 설계하였다.' },
-        { label: 'Process', body: 'TouchDesigner에서 audio_color_visual 네트워크를 중심으로 영상 소스와 컬러, 움직임과 합성 흐름을 노드 단위로 구성하였다. 잉크 스톰처럼 번지는 텍스처와 강한 명암 대비를 조합해 공연장의 대형 스크린에서도 형태가 선명하게 읽히도록 조정했으며, 장면의 밀도와 색 변화를 음악의 흐름에 맞춰 사용할 수 있도록 제작하였다. 실제 공연 환경에서는 화면 비율과 밝기, 관객의 시야에서 비주얼이 차지하는 밀도를 고려해 송출 이미지를 점검하고, 무대와 관객 사이의 거리에서도 시각적 에너지가 유지되도록 구성하였다.' },
-        { label: 'Outcome', body: '최종적으로 잠비나이의 〈소멸의시간〉 공연에서 사용할 수 있는 오디오비주얼 콘텐츠를 제작하고, 실제 공연 현장의 LED 스크린에 상영하였다. 추상적인 잉크와 폭풍의 이미지를 통해 음악의 감정적 강도와 무대의 분위기를 시각화했으며, TouchDesigner 기반의 실시간 미디어아트 제작부터 공연 환경에 맞춘 화면 구성과 송출까지 경험하였다.' }
-      ],
-      details: [
-        { k: '프로젝트 유형', v: '공연 오디오비주얼' },
-        { k: '사용 도구', v: 'TouchDesigner · MCP' },
-        { k: '역할', v: '오디오비주얼 기획 · 제작 · 공연 송출' },
-      ],
-      media: [
-        { type: 'img', src: 'img/TimeOfExtinction.jpg', label: 'Live Performance' },
-        { type: 'img', src: 'img/TimeOfExtinction-TouchDesigner.png', label: 'TouchDesigner Network' },
-        { type: 'youtube', src: 'https://youtu.be/ok3533ZfwyQ', label: 'Performance Video' },
       ]
     },
     BioAx: {
